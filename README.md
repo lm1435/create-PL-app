@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with Create React App and extended to meet PL requirements. 
+
+[Documentation](http://cw-sandbox:9094/)
 
 ## Available Scripts
 

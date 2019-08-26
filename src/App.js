@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import CustomLoadable from './services/loadable.service';
+import ErrorBoundary from './components/error-boundary/error-boundary';
+import AsyncTracker from './components/async-tracker/async-tracker';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const AsyncHome = CustomLoadable(() => import('./components/home/home'));
+
+const App = () => (
+  <ErrorBoundary>
+    <AsyncTracker>
+      <Router>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+        </ul>
+        <Route path="/" exact component={AsyncHome} />
+      </Router>
+    </AsyncTracker>
+  </ErrorBoundary>
+);
 
 export default App;
