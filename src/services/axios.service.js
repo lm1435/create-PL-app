@@ -1,16 +1,16 @@
 import axios from 'axios';
 
-const fetch = (url) => axios.get(url);
+const axiosGet = (url) => axios.get(url);
 
-const post = (url, params) => axios.post(url, params);
+const axiosPost = (url, params) => axios.post(url, params);
 
-const multiFetch = () => axios.all([...arguments]);
+const axiosAll = () => axios.all([...arguments]);
 
-const spread = (data) => axios.spread(data);
+const axiosSpread = (data) => axios.spread(data);
 
 export {
-  fetch,
-  post,
-  multiFetch,
-  spread,
+  axiosGet,
+  axiosPost,
+  axiosAll,
+  axiosSpread,
 };
