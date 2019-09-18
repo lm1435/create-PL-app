@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { PropTypes } from 'prop-types';
 import './async-tracker.css';
 
 export default class AsyncTracker extends Component {
@@ -16,14 +15,24 @@ export default class AsyncTracker extends Component {
 
   axiosRequest = () => {
     axios.interceptors.request.use((config) => {
-      let isCriticalPromise = false;
-      if (config && config.data && config.data.critical) {
-        isCriticalPromise = true;
+      //  if you dont want a single bad request to break the rest of the requests
+      let isCriticalPromise = true;
+      if (config && config.data && config.data.critical != null && !config.data.critical) {
+        isCriticalPromise = config.data.critical;
         if (config.method === 'get') {
           config.data = null;
         }
       }
-      // Do something before request is sent
+
+      //  if you dont want a spinner to be active for this specific request
+      if (config && config.data && config.data.optout) {
+        if (config.method === 'get') {
+          config.data = null;
+        }
+        return config;
+      }
+
+      // add the request to the array to show spinner with configuration.
       const { promiseTrackerArr } = this.state;
       this.setState({
         promiseTrackerArr: [
@@ -35,11 +44,9 @@ export default class AsyncTracker extends Component {
           },
         ],
       });
+
       return config;
-    }, (error) => (
-      // Do something with request error
-      Promise.reject(error)
-    ));
+    }, (error) => error);
   }
 
   axiosResponse = () => {
@@ -66,7 +73,7 @@ export default class AsyncTracker extends Component {
           }),
         });
       }
-      Promise.reject(error);
+      return error;
     });
   }
 
@@ -85,7 +92,3 @@ export default class AsyncTracker extends Component {
     );
   }
 }
-
-AsyncTracker.propTypes = {
-  children: PropTypes.func.isRequired,
-};

@@ -1,6 +1,5 @@
 /* eslint-disable prefer-destructuring */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 export default class ErrorBoundary extends Component {
   state = {
@@ -47,7 +46,3 @@ export default class ErrorBoundary extends Component {
     );
   }
 }
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.func.isRequired,
-};
